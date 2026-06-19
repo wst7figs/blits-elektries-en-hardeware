@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { ShoppingCart, ClipboardList, Check } from "lucide-react";
 import type { Produk } from "@/lib/products";
 import { kategorieNaam } from "@/lib/products";
@@ -34,10 +35,20 @@ export default function ProductCard({ produk }: { produk: Produk }) {
   return (
     <article className="group flex flex-col overflow-hidden rounded-lg border border-blits-line bg-white shadow-card transition-shadow hover:shadow-lg">
       <div
-        className="relative flex aspect-[4/3] items-center justify-center"
-        style={{ background: `linear-gradient(135deg, ${kleurA}, ${kleurB})` }}
+        className="relative flex aspect-[4/3] items-center justify-center overflow-hidden"
+        style={produk.beeldUrl ? undefined : { background: `linear-gradient(135deg, ${kleurA}, ${kleurB})` }}
       >
-        <KategorieIkoon kategorie={produk.kategorie} size={48} className="text-white/80" />
+        {produk.beeldUrl ? (
+          <Image
+            src={`${produk.beeldUrl}?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop`}
+            alt={produk.naam}
+            fill
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            className="object-cover transition-transform duration-300 group-hover:scale-105"
+          />
+        ) : (
+          <KategorieIkoon kategorie={produk.kategorie} size={48} className="text-white/80" />
+        )}
         {produk.topverkoper && (
           <span className="absolute left-2 top-2 rounded bg-blits-amber px-2 py-0.5 text-[10px] font-black uppercase tracking-wide text-blits-black">
             Topverkoper
