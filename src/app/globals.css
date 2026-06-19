@@ -39,8 +39,15 @@ body {
   background: var(--color-blits-paper);
   color: var(--color-blits-ink);
   font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-weight: 500;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+
+@media (min-width: 1024px) {
+  body {
+    font-weight: 400;
+  }
 }
 
 /* Utility: industrial uppercase heading */
