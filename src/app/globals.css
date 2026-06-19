@@ -53,10 +53,16 @@ body {
 /* Utility: industrial uppercase heading */
 .heading-block {
   font-family: var(--font-display);
-  font-weight: 900;
+  font-weight: 800;
   letter-spacing: -0.02em;
   line-height: 0.95;
   text-transform: uppercase;
+}
+
+@media (min-width: 1024px) {
+  .heading-block {
+    font-weight: 900;
+  }
 }
 
 /* Hide scrollbar for horizontal chip rows */
