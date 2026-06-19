@@ -1,0 +1,87 @@
+@import "tailwindcss";
+
+@theme {
+  /* ── Primêre handelsmerk: navy-blou (vervang rooi) ── */
+  --color-blits-red: #1e3a8a;
+  --color-blits-red-dark: #152d6e;
+  --color-blits-red-light: #2952b3;
+
+  /* ── Donker agtergronde: diep navy, byna swart ── */
+  --color-blits-black: #0d0c1f;
+  --color-blits-ink: #0f0e24;
+
+  /* ── Neutrale tinte ── */
+  --color-blits-grey: #6b7280;
+  --color-blits-line: #dde2ee;
+  --color-blits-paper: #f0f2f8;
+
+  /* ── Goud/amber aksentuering (bliksem) ── */
+  --color-blits-amber: #f5b800;
+
+  --font-display: "Arial Black", "Helvetica Neue", system-ui, sans-serif;
+
+  --shadow-card: 0 1px 2px rgba(13, 12, 31, 0.06), 0 4px 16px rgba(13, 12, 31, 0.08);
+}
+
+:root {
+  --header-h: 148px;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-blits-paper);
+  color: var(--color-blits-ink);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Utility: industrial uppercase heading */
+.heading-block {
+  font-family: var(--font-display);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+/* Hide scrollbar for horizontal chip rows */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Diagonal hazard stripe accent */
+.hazard-stripe {
+  background-image: repeating-linear-gradient(
+    45deg,
+    var(--color-blits-amber),
+    var(--color-blits-amber) 12px,
+    var(--color-blits-black) 12px,
+    var(--color-blits-black) 24px
+  );
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-up {
+  animation: fade-up 0.5s ease-out both;
+}
