@@ -184,7 +184,7 @@ export default function WinkelKatalogus() {
           </div>
 
           <div className="mt-4 rounded-lg border-2 border-blits-black bg-blits-black p-4 text-white">
-            <p className="text-sm font-bold uppercase tracking-wide text-blits-amber">Nie kry wat jy soek nie?</p>
+            <p className="text-sm font-bold uppercase tracking-wide text-blits-amber">Kry jy nie wat jy soek nie?</p>
             <p className="mt-1 text-sm text-white/80">Vra ons vir &apos;n pasgemaakte kwotasie op grootmaat of spesiale items.</p>
             <a href="/kwotasie" className="mt-3 inline-flex items-center gap-2 rounded-md bg-blits-red px-4 py-2 text-xs font-bold uppercase tracking-wide hover:bg-blits-red-dark">
               <ClipboardList size={14} /> Kry &apos;n kwotasie
