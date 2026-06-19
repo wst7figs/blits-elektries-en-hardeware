@@ -94,20 +94,24 @@ export default function MandjieBladsy() {
           <div>
             <div className="overflow-hidden rounded-lg border border-blits-line bg-white">
               {mandjie.map((item) => (
-                <div key={item.produk.id} className="flex items-center gap-4 border-b border-blits-line p-4 last:border-b-0">
-                  <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-md bg-blits-paper text-blits-red">
-                    <KategorieIkoon kategorie={item.produk.kategorie} size={28} />
+                <div key={item.produk.id} className="flex gap-3 border-b border-blits-line p-4 last:border-b-0">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-md bg-blits-paper text-blits-red">
+                    <KategorieIkoon kategorie={item.produk.kategorie} size={24} />
                   </div>
                   <div className="min-w-0 flex-1">
-                    <h3 className="truncate text-sm font-bold text-blits-ink">{item.produk.naam}</h3>
-                    <p className="text-xs text-blits-grey">SKU {item.produk.sku} · {randFormaat(item.produk.prys)} elk</p>
-                    <button onClick={() => verwyder(item.produk.id)} className="mt-1 flex items-center gap-1 text-xs font-semibold text-blits-red hover:underline">
-                      <Trash2 size={11} /> Verwyder
-                    </button>
-                  </div>
-                  <HoeveelheidBeheer hoeveelheid={item.hoeveelheid} opStel={(n) => stelHoev(item.produk.id, n)} />
-                  <div className="w-24 text-right text-sm font-bold text-blits-black">
-                    {randFormaat(item.produk.prys * item.hoeveelheid)}
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="min-w-0">
+                        <h3 className="text-sm font-bold leading-tight text-blits-ink">{item.produk.naam}</h3>
+                        <p className="text-xs text-blits-grey">SKU {item.produk.sku} · {randFormaat(item.produk.prys)} elk</p>
+                      </div>
+                      <span className="shrink-0 text-sm font-bold text-blits-black">{randFormaat(item.produk.prys * item.hoeveelheid)}</span>
+                    </div>
+                    <div className="mt-2 flex items-center justify-between">
+                      <HoeveelheidBeheer hoeveelheid={item.hoeveelheid} opStel={(n) => stelHoev(item.produk.id, n)} />
+                      <button onClick={() => verwyder(item.produk.id)} className="flex items-center gap-1 text-xs font-semibold text-blits-red hover:underline">
+                        <Trash2 size={11} /> Verwyder
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}

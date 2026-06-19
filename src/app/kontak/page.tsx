@@ -15,8 +15,8 @@ export default function KontakPage() {
   return (
     <>
       <section className="bg-blits-black text-white">
-        <div className="mx-auto max-w-7xl px-4 py-12">
-          <h1 className="heading-block text-4xl text-white sm:text-5xl">Kontak ons</h1>
+        <div className="mx-auto max-w-7xl px-4 py-10 sm:py-12">
+          <h1 className="heading-block text-3xl text-white sm:text-4xl lg:text-5xl">Kontak ons</h1>
           <p className="mt-2 max-w-2xl text-white/80">
             Kom kuier by ons winkel in {STORE.adres.voorstad}, of skakel — ons help graag persoonlik.
           </p>
@@ -24,7 +24,7 @@ export default function KontakPage() {
         <div className="hazard-stripe h-2 w-full" />
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-12">
+      <section className="mx-auto max-w-7xl px-4 py-8 sm:py-12">
         <div className="grid gap-8 lg:grid-cols-[1fr_1.2fr]">
           <div className="space-y-4">
             <KaartBlok titel="Ligging" Ikoon={MapPin}>
@@ -89,7 +89,7 @@ export default function KontakPage() {
             <iframe
               title={`Kaart na ${STORE.naam}`}
               src={kaartUrl}
-              className="h-[420px] w-full lg:h-full"
+              className="h-64 w-full sm:h-96 lg:h-full"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
             />

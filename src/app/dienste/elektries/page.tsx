@@ -34,14 +34,14 @@ export default function ElektriesePage() {
   return (
     <>
       <section className="bg-blits-black text-white">
-        <div className="mx-auto max-w-7xl px-4 py-14">
+        <div className="mx-auto max-w-7xl px-4 py-10 sm:py-14">
           <span className="inline-flex items-center gap-2 rounded-full bg-blits-amber/15 px-3 py-1 text-xs font-bold uppercase tracking-wide text-blits-amber">
             <Zap size={13} /> Elektriese Dienste
           </span>
-          <h1 className="mt-3 heading-block text-4xl text-white sm:text-5xl">
+          <h1 className="mt-3 heading-block text-3xl text-white sm:text-4xl lg:text-5xl">
             Drie gesertifiseerde spanne. Een gerusstelling.
           </h1>
-          <p className="mt-3 max-w-2xl text-lg text-white/80">
+          <p className="mt-3 max-w-2xl text-base text-white/80 sm:text-lg">
             Van &apos;n stukkende kragpunt tot volledige kommersiële installasies —
             Blits se ECA-gesertifiseerde elektrisiëns lewer gewaarborgde werk vir
             die Moot-gemeenskap sedert {STORE.sedert}.
@@ -58,8 +58,8 @@ export default function ElektriesePage() {
         <div className="hazard-stripe h-2 w-full" />
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-14">
-        <h2 className="heading-block text-3xl text-blits-black">Ons spanne</h2>
+      <section className="mx-auto max-w-7xl px-4 py-10 sm:py-14">
+        <h2 className="heading-block text-2xl text-blits-black sm:text-3xl">Ons spanne</h2>
         <div className="mt-6 grid gap-4 md:grid-cols-3">
           {SPANNE.map((s) => (
             <div key={s.naam} className="rounded-xl border border-blits-line bg-white p-6 shadow-card">
@@ -73,9 +73,9 @@ export default function ElektriesePage() {
         </div>
       </section>
 
-      <section className="bg-white py-14">
+      <section className="bg-white py-10 sm:py-14">
         <div className="mx-auto max-w-7xl px-4">
-          <h2 className="heading-block text-3xl text-blits-black">Hoekom Blits</h2>
+          <h2 className="heading-block text-2xl text-blits-black sm:text-3xl">Hoekom Blits</h2>
           <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {WAARBORGE.map(({ Ikoon, titel, beskrywing }) => (
               <div key={titel} className="rounded-xl border border-blits-line bg-blits-paper p-5">
@@ -88,10 +88,10 @@ export default function ElektriesePage() {
         </div>
       </section>
 
-      <section id="bespreek" className="mx-auto max-w-7xl scroll-mt-44 px-4 py-14">
+      <section id="bespreek" className="mx-auto max-w-7xl scroll-mt-44 px-4 py-10 sm:py-14">
         <div className="grid gap-8 lg:grid-cols-2">
           <div>
-            <h2 className="heading-block text-3xl text-blits-black">Bespreek &apos;n terreinkonsultasie</h2>
+            <h2 className="heading-block text-2xl text-blits-black sm:text-3xl">Bespreek &apos;n terreinkonsultasie</h2>
             <p className="mt-2 text-blits-grey">
               Voltooi die vorm en een van ons spanne kontak jou om &apos;n besoek te reël. Vir grootmaat-materiaal saam met die werk, vra ook gerus &apos;n{" "}
               <Link href="/kwotasie" className="font-semibold text-blits-red hover:underline">kwotasie</Link>.

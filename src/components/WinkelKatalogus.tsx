@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { ClipboardList } from "lucide-react";
+import { ClipboardList, SlidersHorizontal, X } from "lucide-react";
 import { KATEGORIEE, PRODUKTE, type KategorieSleutel } from "@/lib/products";
 import KategorieIkoon from "./KategorieIkoon";
 import ProductCard from "./ProductCard";
@@ -22,6 +22,7 @@ export default function WinkelKatalogus() {
   const [sortering, stelSortering] = useState<Sortering>("relevant");
   const [slegsVoorraad, stelSlegsVoorraad] = useState(false);
   const [wysAantal, stelWysAantal] = useState(BLAD);
+  const [filterOop, stelFilterOop] = useState(false);
 
   const gefiltreer = useMemo(() => {
     const term = soek.trim().toLowerCase();
@@ -47,17 +48,102 @@ export default function WinkelKatalogus() {
 
   const sigbaar = gefiltreer.slice(0, wysAantal);
 
+  const kiesKategorie = (k: KategorieSleutel | "alle") => {
+    stelKategorie(k);
+    stelWysAantal(BLAD);
+    stelFilterOop(false);
+  };
+
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8">
+    <div className="mx-auto max-w-7xl px-4 py-6">
+
+      {/* ── Mobiele kategorie-chips (horisontaal scroll) ── */}
+      <div className="mb-4 lg:hidden">
+        <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2">
+          <button
+            onClick={() => kiesKategorie("alle")}
+            className={`shrink-0 rounded-full px-3 py-1.5 text-xs font-bold uppercase tracking-wide transition-colors ${
+              kategorie === "alle"
+                ? "bg-blits-red text-white"
+                : "border border-blits-line bg-white text-blits-ink"
+            }`}
+          >
+            Alles ({PRODUKTE.length})
+          </button>
+          {KATEGORIEE.map((k) => (
+            <button
+              key={k.sleutel}
+              onClick={() => kiesKategorie(k.sleutel)}
+              className={`flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold uppercase tracking-wide transition-colors ${
+                kategorie === k.sleutel
+                  ? "bg-blits-red text-white"
+                  : "border border-blits-line bg-white text-blits-ink"
+              }`}
+            >
+              <KategorieIkoon kategorie={k.sleutel} size={12} />
+              {k.naam}
+            </button>
+          ))}
+        </div>
+
+        {/* Mobiele filter/sorteer balk */}
+        <div className="mt-2 flex gap-2">
+          <input
+            type="search"
+            value={soek}
+            onChange={(e) => { stelSoek(e.target.value); stelWysAantal(BLAD); }}
+            placeholder="Soek produkte…"
+            className="flex-1 rounded-md border border-blits-line bg-white px-3 py-2 text-sm outline-none focus:border-blits-red"
+          />
+          <button
+            onClick={() => stelFilterOop(!filterOop)}
+            className="flex items-center gap-1.5 rounded-md border border-blits-line bg-white px-3 py-2 text-sm font-semibold text-blits-ink"
+          >
+            <SlidersHorizontal size={14} /> Filter
+          </button>
+        </div>
+
+        {/* Mobiele filter-uitklap */}
+        {filterOop && (
+          <div className="mt-2 rounded-lg border border-blits-line bg-white p-4 shadow-card">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-sm font-bold text-blits-black">Filtreer &amp; Sorteer</span>
+              <button onClick={() => stelFilterOop(false)}><X size={16} className="text-blits-grey" /></button>
+            </div>
+            <label className="flex items-center gap-2 text-sm font-semibold text-blits-ink mb-3">
+              <input
+                type="checkbox"
+                checked={slegsVoorraad}
+                onChange={(e) => { stelSlegsVoorraad(e.target.checked); stelWysAantal(BLAD); }}
+                className="h-4 w-4 accent-blits-red"
+              />
+              Slegs items op voorraad
+            </label>
+            <select
+              value={sortering}
+              onChange={(e) => stelSortering(e.target.value as Sortering)}
+              className="w-full rounded-md border border-blits-line bg-white px-3 py-2 text-sm outline-none focus:border-blits-red"
+            >
+              <option value="relevant">Aanbeveel</option>
+              <option value="prys-op">Prys: laag → hoog</option>
+              <option value="prys-af">Prys: hoog → laag</option>
+              <option value="naam">Naam (A–Z)</option>
+            </select>
+          </div>
+        )}
+      </div>
+
+      {/* ── Desktop: kantbalk + rooster ── */}
       <div className="grid gap-8 lg:grid-cols-[260px_1fr]">
-        {/* Kantbalk */}
-        <aside className="lg:sticky lg:top-44 lg:self-start">
+
+        {/* Desktop kantbalk */}
+        <aside className="hidden lg:block lg:sticky lg:top-44 lg:self-start">
           <div className="rounded-lg border border-blits-line bg-white p-4 shadow-card">
             <h2 className="mb-3 text-sm font-bold uppercase tracking-wide text-blits-black">Kategorieë</h2>
             <ul className="space-y-1">
               <li>
                 <button
-                  onClick={() => { stelKategorie("alle"); stelWysAantal(BLAD); }}
+                  onClick={() => kiesKategorie("alle")}
                   className={`flex w-full items-center justify-between rounded-md px-3 py-2 text-sm font-semibold ${
                     kategorie === "alle" ? "bg-blits-red text-white" : "text-blits-ink hover:bg-blits-paper"
                   }`}
@@ -71,7 +157,7 @@ export default function WinkelKatalogus() {
                 return (
                   <li key={k.sleutel}>
                     <button
-                      onClick={() => { stelKategorie(k.sleutel); stelWysAantal(BLAD); }}
+                      onClick={() => kiesKategorie(k.sleutel)}
                       className={`flex w-full items-center justify-between rounded-md px-3 py-2 text-sm font-semibold ${
                         kategorie === k.sleutel ? "bg-blits-red text-white" : "text-blits-ink hover:bg-blits-paper"
                       }`}
@@ -98,16 +184,9 @@ export default function WinkelKatalogus() {
           </div>
 
           <div className="mt-4 rounded-lg border-2 border-blits-black bg-blits-black p-4 text-white">
-            <p className="text-sm font-bold uppercase tracking-wide text-blits-amber">
-              Nie kry wat jy soek nie?
-            </p>
-            <p className="mt-1 text-sm text-white/80">
-              Vra ons vir &apos;n pasgemaakte kwotasie op grootmaat of spesiale items.
-            </p>
-            <a
-              href="/kwotasie"
-              className="mt-3 inline-flex items-center gap-2 rounded-md bg-blits-red px-4 py-2 text-xs font-bold uppercase tracking-wide hover:bg-blits-red-dark"
-            >
+            <p className="text-sm font-bold uppercase tracking-wide text-blits-amber">Nie kry wat jy soek nie?</p>
+            <p className="mt-1 text-sm text-white/80">Vra ons vir &apos;n pasgemaakte kwotasie op grootmaat of spesiale items.</p>
+            <a href="/kwotasie" className="mt-3 inline-flex items-center gap-2 rounded-md bg-blits-red px-4 py-2 text-xs font-bold uppercase tracking-wide hover:bg-blits-red-dark">
               <ClipboardList size={14} /> Kry &apos;n kwotasie
             </a>
           </div>
@@ -115,7 +194,7 @@ export default function WinkelKatalogus() {
 
         {/* Produkrooster */}
         <section>
-          <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="mb-4 hidden items-center justify-between lg:flex">
             <div>
               <h1 className="heading-block text-2xl text-blits-black">Aanlyn Winkel</h1>
               <p className="text-sm text-blits-grey">
@@ -134,8 +213,7 @@ export default function WinkelKatalogus() {
               <select
                 value={sortering}
                 onChange={(e) => stelSortering(e.target.value as Sortering)}
-                aria-label="Sorteer produkte"
-                className="rounded-md border border-blits-line bg-white px-3 py-2 text-sm font-semibold outline-none focus:border-blits-red"
+                className="rounded-md border border-blits-line bg-white px-3 py-2 text-sm font-semibold outline-none"
               >
                 <option value="relevant">Aanbeveel</option>
                 <option value="prys-op">Prys: laag → hoog</option>
@@ -145,25 +223,24 @@ export default function WinkelKatalogus() {
             </div>
           </div>
 
+          {/* Mobiele resultaat-telling */}
+          <p className="mb-3 text-sm text-blits-grey lg:hidden">
+            <span className="font-bold text-blits-ink">{gefiltreer.length}</span> produk{gefiltreer.length === 1 ? "" : "te"} gevind
+            {soek ? ` vir "${soek}"` : ""}
+          </p>
+
           {sigbaar.length === 0 ? (
-            <div className="rounded-lg border border-dashed border-blits-line bg-white p-12 text-center">
-              <p className="text-lg font-bold text-blits-ink">Geen resultate nie</p>
-              <p className="mt-1 text-sm text-blits-grey">
-                Probeer &apos;n ander soekterm of vra ons vir &apos;n kwotasie.
-              </p>
-              <a
-                href="/kwotasie"
-                className="mt-4 inline-flex items-center gap-2 rounded-md bg-blits-red px-5 py-2.5 text-sm font-bold uppercase tracking-wide text-white hover:bg-blits-red-dark"
-              >
+            <div className="rounded-lg border border-dashed border-blits-line bg-white p-10 text-center">
+              <p className="text-base font-bold text-blits-ink">Geen resultate nie</p>
+              <p className="mt-1 text-sm text-blits-grey">Probeer &apos;n ander soekterm of vra ons vir &apos;n kwotasie.</p>
+              <a href="/kwotasie" className="mt-4 inline-flex items-center gap-2 rounded-md bg-blits-red px-5 py-2.5 text-sm font-bold uppercase tracking-wide text-white hover:bg-blits-red-dark">
                 <ClipboardList size={15} /> Kry &apos;n kwotasie
               </a>
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 xl:grid-cols-4">
-                {sigbaar.map((p) => (
-                  <ProductCard key={p.id} produk={p} />
-                ))}
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+                {sigbaar.map((p) => <ProductCard key={p.id} produk={p} />)}
               </div>
               {wysAantal < gefiltreer.length && (
                 <div className="mt-8 flex justify-center">

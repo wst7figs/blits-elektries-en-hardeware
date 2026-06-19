@@ -60,7 +60,7 @@ export default function KwotasieBladsy() {
         <span className="inline-flex items-center gap-2 rounded-full bg-blits-amber/15 px-3 py-1 text-xs font-bold uppercase tracking-wide text-blits-amber">
           <ClipboardList size={13} /> Kry &apos;n Kwotasie
         </span>
-        <h1 className="mt-3 heading-block text-3xl text-white sm:text-4xl">Vra &apos;n pasgemaakte kwotasie aan</h1>
+        <h1 className="mt-3 heading-block text-2xl text-white sm:text-3xl lg:text-4xl">Vra &apos;n pasgemaakte kwotasie aan</h1>
         <p className="mt-2 max-w-2xl text-white/80">
           Nie &apos;n item gekry nie, of het jy grootmaat- of pasgemaakte hoeveelhede nodig? Voltooi die vorm — ons span keer binne 24 uur terug.
         </p>
