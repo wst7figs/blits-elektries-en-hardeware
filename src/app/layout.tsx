@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -37,6 +38,13 @@ export default function RootLayout({
         <Header />
         <main>{children}</main>
         <Footer />
+        {/* Blits Handyman klets-widget */}
+        <Script
+          src="https://widgets.leadconnectorhq.com/loader.js"
+          data-resources-url="https://widgets.leadconnectorhq.com/chat-widget/loader.js"
+          data-widget-id="6a3bc3285ccb4c81af5fc70b"
+          strategy="lazyOnload"
+        />
         {/* Plaaslike SEO: gestruktureerde data */}
         <script
           type="application/ld+json"
