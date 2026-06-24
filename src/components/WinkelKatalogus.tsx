@@ -6,11 +6,13 @@ import { ClipboardList, SlidersHorizontal, X } from "lucide-react";
 import { KATEGORIEE, PRODUKTE, type KategorieSleutel } from "@/lib/products";
 import KategorieIkoon from "./KategorieIkoon";
 import ProductCard from "./ProductCard";
+import { useTaal } from "@/lib/taal";
 
 type Sortering = "relevant" | "prys-op" | "prys-af" | "naam";
 const BLAD = 12;
 
 export default function WinkelKatalogus() {
+  const { t } = useTaal();
   const params = useSearchParams();
   const beginKategorie = (params.get("kategorie") as KategorieSleutel) ?? "alle";
   const soekUrl = params.get("soek") ?? "";
@@ -68,7 +70,7 @@ export default function WinkelKatalogus() {
                 : "border border-blits-line bg-white text-blits-ink"
             }`}
           >
-            Alles ({PRODUKTE.length})
+            {t("Alles", "All")} ({PRODUKTE.length})
           </button>
           {KATEGORIEE.map((k) => (
             <button
@@ -81,7 +83,7 @@ export default function WinkelKatalogus() {
               }`}
             >
               <KategorieIkoon kategorie={k.sleutel} size={12} />
-              {k.naam}
+              {t(k.naam, k.naamEn)}
             </button>
           ))}
         </div>
@@ -92,14 +94,14 @@ export default function WinkelKatalogus() {
             type="search"
             value={soek}
             onChange={(e) => { stelSoek(e.target.value); stelWysAantal(BLAD); }}
-            placeholder="Soek produkte…"
+            placeholder={t("Soek produkte…", "Search products…")}
             className="flex-1 rounded-md border border-blits-line bg-white px-3 py-2 text-sm outline-none focus:border-blits-red"
           />
           <button
             onClick={() => stelFilterOop(!filterOop)}
             className="flex items-center gap-1.5 rounded-md border border-blits-line bg-white px-3 py-2 text-sm font-semibold text-blits-ink"
           >
-            <SlidersHorizontal size={14} /> Filter
+            <SlidersHorizontal size={14} /> {t("Filter", "Filter")}
           </button>
         </div>
 
@@ -107,7 +109,7 @@ export default function WinkelKatalogus() {
         {filterOop && (
           <div className="mt-2 rounded-lg border border-blits-line bg-white p-4 shadow-card">
             <div className="flex items-center justify-between mb-3">
-              <span className="text-sm font-bold text-blits-black">Filtreer &amp; Sorteer</span>
+              <span className="text-sm font-bold text-blits-black">{t("Filtreer & Sorteer", "Filter & Sort")}</span>
               <button onClick={() => stelFilterOop(false)}><X size={16} className="text-blits-grey" /></button>
             </div>
             <label className="flex items-center gap-2 text-sm font-semibold text-blits-ink mb-3">
@@ -117,17 +119,17 @@ export default function WinkelKatalogus() {
                 onChange={(e) => { stelSlegsVoorraad(e.target.checked); stelWysAantal(BLAD); }}
                 className="h-4 w-4 accent-blits-red"
               />
-              Slegs items op voorraad
+              {t("Slegs items op voorraad", "In stock items only")}
             </label>
             <select
               value={sortering}
               onChange={(e) => stelSortering(e.target.value as Sortering)}
               className="w-full rounded-md border border-blits-line bg-white px-3 py-2 text-sm outline-none focus:border-blits-red"
             >
-              <option value="relevant">Aanbeveel</option>
-              <option value="prys-op">Prys: laag → hoog</option>
-              <option value="prys-af">Prys: hoog → laag</option>
-              <option value="naam">Naam (A–Z)</option>
+              <option value="relevant">{t("Aanbeveel", "Recommended")}</option>
+              <option value="prys-op">{t("Prys: laag → hoog", "Price: low → high")}</option>
+              <option value="prys-af">{t("Prys: hoog → laag", "Price: high → low")}</option>
+              <option value="naam">{t("Naam (A–Z)", "Name (A–Z)")}</option>
             </select>
           </div>
         )}
@@ -139,7 +141,7 @@ export default function WinkelKatalogus() {
         {/* Desktop kantbalk */}
         <aside className="hidden lg:block lg:sticky lg:top-44 lg:self-start">
           <div className="rounded-lg border border-blits-line bg-white p-4 shadow-card">
-            <h2 className="mb-3 text-sm font-bold uppercase tracking-wide text-blits-black">Kategorieë</h2>
+            <h2 className="mb-3 text-sm font-bold uppercase tracking-wide text-blits-black">{t("Kategorieë", "Categories")}</h2>
             <ul className="space-y-1">
               <li>
                 <button
@@ -148,7 +150,7 @@ export default function WinkelKatalogus() {
                     kategorie === "alle" ? "bg-blits-red text-white" : "text-blits-ink hover:bg-blits-paper"
                   }`}
                 >
-                  <span>Alle produkte</span>
+                  <span>{t("Alle produkte", "All products")}</span>
                   <span className="text-xs opacity-70">{PRODUKTE.length}</span>
                 </button>
               </li>
@@ -164,7 +166,7 @@ export default function WinkelKatalogus() {
                     >
                       <span className="flex items-center gap-2">
                         <KategorieIkoon kategorie={k.sleutel} size={15} />
-                        {k.naam}
+                        {t(k.naam, k.naamEn)}
                       </span>
                       <span className="text-xs opacity-70">{aantal}</span>
                     </button>
@@ -179,15 +181,15 @@ export default function WinkelKatalogus() {
                 onChange={(e) => { stelSlegsVoorraad(e.target.checked); stelWysAantal(BLAD); }}
                 className="h-4 w-4 accent-blits-red"
               />
-              Wys slegs items op voorraad
+              {t("Wys slegs items op voorraad", "Show in stock items only")}
             </label>
           </div>
 
           <div className="mt-4 rounded-lg border-2 border-blits-black bg-blits-black p-4 text-white">
-            <p className="text-sm font-bold uppercase tracking-wide text-blits-amber">Kry jy nie wat jy soek nie?</p>
-            <p className="mt-1 text-sm text-white/80">Vra ons vir &apos;n pasgemaakte kwotasie op grootmaat of spesiale items.</p>
+            <p className="text-sm font-bold uppercase tracking-wide text-blits-amber">{t("Kry jy nie wat jy soek nie?", "Can't find what you're looking for?")}</p>
+            <p className="mt-1 text-sm text-white/80">{t("Vra ons vir 'n pasgemaakte kwotasie op grootmaat of spesiale items.", "Ask us for a custom quote on bulk or special items.")}</p>
             <a href="/kwotasie" className="mt-3 inline-flex items-center gap-2 rounded-md bg-blits-red px-4 py-2 text-xs font-bold uppercase tracking-wide hover:bg-blits-red-dark">
-              <ClipboardList size={14} /> Kry &apos;n kwotasie
+              <ClipboardList size={14} /> {t("Kry 'n kwotasie", "Get a quote")}
             </a>
           </div>
         </aside>
@@ -196,10 +198,10 @@ export default function WinkelKatalogus() {
         <section>
           <div className="mb-4 hidden items-center justify-between lg:flex">
             <div>
-              <h1 className="heading-block text-2xl text-blits-black">Aanlyn Winkel</h1>
+              <h1 className="heading-block text-2xl text-blits-black">{t("Aanlyn Winkel", "Online Shop")}</h1>
               <p className="text-sm text-blits-grey">
-                {gefiltreer.length} produk{gefiltreer.length === 1 ? "" : "te"} gevind
-                {soek ? ` vir "${soek}"` : ""}
+                {gefiltreer.length} {t(gefiltreer.length === 1 ? "produk" : "produkte", gefiltreer.length === 1 ? "product" : "products")} {t("gevind", "found")}
+                {soek ? ` ${t("vir", "for")} "${soek}"` : ""}
               </p>
             </div>
             <div className="flex items-center gap-2">
@@ -207,7 +209,7 @@ export default function WinkelKatalogus() {
                 type="search"
                 value={soek}
                 onChange={(e) => { stelSoek(e.target.value); stelWysAantal(BLAD); }}
-                placeholder="Verfyn soektog…"
+                placeholder={t("Verfyn soektog…", "Refine search…")}
                 className="w-40 rounded-md border border-blits-line bg-white px-3 py-2 text-sm outline-none focus:border-blits-red sm:w-48"
               />
               <select
@@ -215,26 +217,26 @@ export default function WinkelKatalogus() {
                 onChange={(e) => stelSortering(e.target.value as Sortering)}
                 className="rounded-md border border-blits-line bg-white px-3 py-2 text-sm font-semibold outline-none"
               >
-                <option value="relevant">Aanbeveel</option>
-                <option value="prys-op">Prys: laag → hoog</option>
-                <option value="prys-af">Prys: hoog → laag</option>
-                <option value="naam">Naam (A–Z)</option>
+                <option value="relevant">{t("Aanbeveel", "Recommended")}</option>
+                <option value="prys-op">{t("Prys: laag → hoog", "Price: low → high")}</option>
+                <option value="prys-af">{t("Prys: hoog → laag", "Price: high → low")}</option>
+                <option value="naam">{t("Naam (A–Z)", "Name (A–Z)")}</option>
               </select>
             </div>
           </div>
 
           {/* Mobiele resultaat-telling */}
           <p className="mb-3 text-sm text-blits-grey lg:hidden">
-            <span className="font-bold text-blits-ink">{gefiltreer.length}</span> produk{gefiltreer.length === 1 ? "" : "te"} gevind
-            {soek ? ` vir "${soek}"` : ""}
+            <span className="font-bold text-blits-ink">{gefiltreer.length}</span> {t(gefiltreer.length === 1 ? "produk" : "produkte", gefiltreer.length === 1 ? "product" : "products")} {t("gevind", "found")}
+            {soek ? ` ${t("vir", "for")} "${soek}"` : ""}
           </p>
 
           {sigbaar.length === 0 ? (
             <div className="rounded-lg border border-dashed border-blits-line bg-white p-10 text-center">
-              <p className="text-base font-bold text-blits-ink">Geen resultate nie</p>
-              <p className="mt-1 text-sm text-blits-grey">Probeer &apos;n ander soekterm of vra ons vir &apos;n kwotasie.</p>
+              <p className="text-base font-bold text-blits-ink">{t("Geen resultate nie", "No results")}</p>
+              <p className="mt-1 text-sm text-blits-grey">{t("Probeer 'n ander soekterm of vra ons vir 'n kwotasie.", "Try a different search term or ask us for a quote.")}</p>
               <a href="/kwotasie" className="mt-4 inline-flex items-center gap-2 rounded-md bg-blits-red px-5 py-2.5 text-sm font-bold uppercase tracking-wide text-white hover:bg-blits-red-dark">
-                <ClipboardList size={15} /> Kry &apos;n kwotasie
+                <ClipboardList size={15} /> {t("Kry 'n kwotasie", "Get a quote")}
               </a>
             </div>
           ) : (
@@ -248,7 +250,7 @@ export default function WinkelKatalogus() {
                     onClick={() => stelWysAantal((n) => n + BLAD)}
                     className="rounded-md border-2 border-blits-black px-8 py-3 text-sm font-bold uppercase tracking-wide text-blits-black transition-colors hover:bg-blits-black hover:text-white"
                   >
-                    Laai nog produkte ({gefiltreer.length - wysAantal} oor)
+                    {t("Laai nog produkte", "Load more products")} ({gefiltreer.length - wysAantal} {t("oor", "remaining")})
                   </button>
                 </div>
               )}

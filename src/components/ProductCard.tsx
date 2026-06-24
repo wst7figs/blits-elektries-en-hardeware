@@ -7,6 +7,7 @@ import type { Produk } from "@/lib/products";
 import { kategorieNaam } from "@/lib/products";
 import { randFormaat } from "@/lib/format";
 import { useMandjie } from "@/lib/winkelmandjie";
+import { useTaal } from "@/lib/taal";
 import KategorieIkoon from "./KategorieIkoon";
 
 function produkKleur(id: string) {
@@ -26,11 +27,14 @@ export default function ProductCard({ produk }: { produk: Produk }) {
   const voegByKwotasie = useMandjie((s) => s.voegByKwotasie);
   const [flits, stelFlits] = useState<"" | "mandjie" | "kwotasie">("");
   const [kleurA, kleurB] = produkKleur(produk.id);
+  const { taal, t } = useTaal();
 
   const wys = (tipe: "mandjie" | "kwotasie") => {
     stelFlits(tipe);
     window.setTimeout(() => stelFlits(""), 1400);
   };
+
+  const naam = taal === "en" ? (produk.naamEn ?? produk.naam) : produk.naam;
 
   return (
     <article className="group flex flex-col overflow-hidden rounded-lg border border-blits-line bg-white shadow-card transition-shadow hover:shadow-lg">
@@ -41,7 +45,7 @@ export default function ProductCard({ produk }: { produk: Produk }) {
         {produk.beeldUrl ? (
           <Image
             src={`${produk.beeldUrl}?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop`}
-            alt={produk.naam}
+            alt={naam}
             fill
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
             className="object-cover transition-transform duration-300 group-hover:scale-105"
@@ -51,36 +55,30 @@ export default function ProductCard({ produk }: { produk: Produk }) {
         )}
         {produk.topverkoper && (
           <span className="absolute left-2 top-2 rounded bg-blits-amber px-2 py-0.5 text-[10px] font-black uppercase tracking-wide text-blits-black">
-            Topverkoper
+            {t("Topverkoper", "Top Seller")}
           </span>
         )}
-        <span
-          className={`absolute right-2 top-2 rounded px-2 py-0.5 text-[10px] font-black uppercase tracking-wide ${
-            produk.voorraad
-              ? "bg-white/90 text-green-700"
-              : "bg-blits-black/85 text-white"
-          }`}
-        >
-          {produk.voorraad ? "Op voorraad" : "Uit voorraad"}
+        <span className={`absolute right-2 top-2 rounded px-2 py-0.5 text-[10px] font-black uppercase tracking-wide ${
+          produk.voorraad ? "bg-white/90 text-green-700" : "bg-blits-black/85 text-white"
+        }`}>
+          {produk.voorraad ? t("Op voorraad", "In stock") : t("Uit voorraad", "Out of stock")}
         </span>
       </div>
 
       <div className="flex flex-1 flex-col p-3">
         <span className="text-[11px] font-semibold uppercase tracking-wide text-blits-red">
-          {kategorieNaam(produk.kategorie)}
+          {kategorieNaam(produk.kategorie, taal)}
         </span>
         <h3 className="mt-1 line-clamp-2 text-sm font-bold leading-snug text-blits-ink">
-          {produk.naam}
+          {naam}
         </h3>
         <p className="mt-0.5 text-xs text-blits-grey">
           {produk.handelsmerk} · SKU {produk.sku}
         </p>
 
         <div className="mt-3 flex items-baseline gap-1">
-          <span className="text-lg font-black text-blits-black">
-            {randFormaat(produk.prys)}
-          </span>
-          <span className="text-[10px] text-blits-grey">BTW ingesluit</span>
+          <span className="text-lg font-black text-blits-black">{randFormaat(produk.prys)}</span>
+          <span className="text-[10px] text-blits-grey">{t("BTW ingesluit", "VAT included")}</span>
         </div>
 
         <div className="mt-3 flex flex-col gap-2">
@@ -91,12 +89,12 @@ export default function ProductCard({ produk }: { produk: Produk }) {
               className="flex items-center justify-center gap-2 rounded-md bg-blits-red px-3 py-2 text-xs font-bold uppercase tracking-wide text-white transition-colors hover:bg-blits-red-dark"
             >
               {flits === "mandjie"
-                ? <><Check size={13} /> Bygevoeg!</>
-                : <><ShoppingCart size={13} /> Voeg by mandjie</>}
+                ? <><Check size={13} /> {t("Bygevoeg!", "Added!")}</>
+                : <><ShoppingCart size={13} /> {t("Voeg by mandjie", "Add to cart")}</>}
             </button>
           ) : (
             <span className="rounded-md bg-blits-paper px-3 py-2 text-center text-xs font-semibold text-blits-grey">
-              Beskikbaar op bestelling
+              {t("Beskikbaar op bestelling", "Available on order")}
             </span>
           )}
           <button
@@ -105,8 +103,8 @@ export default function ProductCard({ produk }: { produk: Produk }) {
             className="flex items-center justify-center gap-2 rounded-md border-2 border-blits-black px-3 py-2 text-xs font-bold uppercase tracking-wide text-blits-black transition-colors hover:bg-blits-black hover:text-white"
           >
             {flits === "kwotasie"
-              ? <><Check size={13} /> By kwotasie!</>
-              : <><ClipboardList size={13} /> Voeg by kwotasie</>}
+              ? <><Check size={13} /> {t("By kwotasie!", "Added!")}</>
+              : <><ClipboardList size={13} /> {t("Voeg by kwotasie", "Add to quote")}</>}
           </button>
         </div>
       </div>

@@ -3,6 +3,7 @@ import Script from "next/script";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { TaalVerskaffer } from "@/lib/taal";
 import { STORE, adresEenReel } from "@/lib/store-info";
 
 export const metadata: Metadata = {
@@ -35,9 +36,11 @@ export default function RootLayout({
   return (
     <html lang="af">
       <body className="min-h-screen">
-        <Header />
-        <main>{children}</main>
-        <Footer />
+        <TaalVerskaffer>
+          <Header />
+          <main>{children}</main>
+          <Footer />
+        </TaalVerskaffer>
         {/* Blits Handyman klets-widget */}
         <Script
           src="https://widgets.leadconnectorhq.com/loader.js"
